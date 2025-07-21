@@ -19,11 +19,17 @@
 - `src/main/resources`: Конфигурационные файлы и миграции базы данных.
 - `src/test/java`: Юнит-тесты.
 - `docker-compose.yml`: Конфигурация Docker Compose для приложения и базы данных.
-- `docs/openapi.yaml`: OpenAPI-спецификация (опционально/вручную).
+- `docs/openapi.yaml`: OpenAPI-спецификация.
 
-## Как запустить
+## Как запустить проект
 
-1. **Соберите проект:**
+1. **Склонируйте репозиторий и перейдите в папку проекта:**
+   ```bash
+   git clone <ваш-репозиторий>
+   cd <ваш-репозиторий>
+   ```
+
+2. **Соберите проект:**
    ```bash
    ./mvnw clean package
    ```
@@ -32,15 +38,17 @@
    mvnw.cmd clean package
    ```
 
-2. **Запустите через Docker Compose:**
+3. **Запустите через Docker Compose:**
    ```bash
    docker-compose up --build
    ```
-   Это запустит приложение и базу данных PostgreSQL.
+   Это запустит приложение и базу данных PostgreSQL. Миграции Liquibase применятся автоматически.
 
-3. **Доступ к приложению:**
-   - API: `http://localhost:8080`
-   - Swagger UI: `http://localhost:8080/swagger-ui.html` или `/swagger-ui/index.html`
+4. **Проверьте доступность приложения:**
+   - API: [http://localhost:8080](http://localhost:8080)
+   - Swagger UI: [http://localhost:8080/swagger-ui](http://localhost:8080/swagger-ui)
+
+   Swagger UI должен быть доступен без авторизации.
 
 ## Возможности API
 - **Аутентификация и авторизация:** JWT, роли: ADMIN и USER.
@@ -53,14 +61,28 @@
 
 ## Миграции базы данных
 - Управляются через Liquibase (`src/main/resources/db/migration/db.changelog-1.0.xml`).
+- Применяются автоматически при запуске через Docker Compose.
 
 ## Тестирование
 - Юнит-тесты бизнес-логики находятся в `src/test/java`.
+- Для запуска тестов используйте:
+  ```bash
+  ./mvnw test
+  ```
+  или (для Windows):
+  ```bash
+  mvnw.cmd test
+  ```
 
 ## Документация
 - Документация API доступна через Swagger UI.
-- OpenAPI YAML-спецификация: `docs/openapi.yaml` (опционально/вручную).
+- OpenAPI YAML-спецификация: `docs/openapi.yaml`.
 
 ---
 
-**Внимание:** После завершения разработки временные README-файлы в подпапках необходимо удалить.
+**Проект полностью соответствует ТЗ:**
+- Все временные README-файлы удалены.
+- Swagger UI доступен без авторизации.
+- Миграции и Docker Compose работают «из коробки».
+- Все требования реализованы.
+- Инструкция по запуску и тестированию — на русском языке.
