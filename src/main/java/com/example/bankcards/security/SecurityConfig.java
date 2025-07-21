@@ -29,6 +29,7 @@ public class SecurityConfig {
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
