@@ -6,7 +6,7 @@ import java.util.Base64;
 
 public class CardEncryptionUtil {
     private static final String ALGORITHM = "AES";
-    private static final String SECRET_KEY = "MySuperSecretKey1"; // 16 символов
+    private static final String SECRET_KEY = "MySecretKey12345"; // 16 символов для AES-128
 
     public static String encrypt(String cardNumber) {
         try {
