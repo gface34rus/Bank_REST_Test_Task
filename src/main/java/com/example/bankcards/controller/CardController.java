@@ -58,15 +58,18 @@ public class CardController {
         cardService.deleteCard(id);
     }
 
+
     @PostMapping("/{id}/block")
     public Card blockCard(@PathVariable Long id) {
         return cardService.blockCard(id);
     }
 
+
     @PostMapping("/{id}/activate")
     public Card activateCard(@PathVariable Long id) {
         return cardService.activateCard(id);
     }
+
 
     @GetMapping("/{id}/balance")
     public BigDecimal getBalance(@PathVariable Long id, Principal principal) {
