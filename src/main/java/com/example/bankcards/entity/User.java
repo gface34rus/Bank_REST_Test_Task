@@ -2,6 +2,7 @@ package com.example.bankcards.entity;
 
 import jakarta.persistence.*;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +29,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Card> cards = new ArrayList<>();
 
     public User() {}

@@ -2,6 +2,7 @@ package com.example.bankcards.util;
 
 import com.example.bankcards.dto.UserDto;
 import com.example.bankcards.entity.User;
+import com.example.bankcards.dto.RoleDto;
 import java.util.stream.Collectors;
 
 public class UserMapper {
@@ -13,7 +14,7 @@ public class UserMapper {
         // Добавим список ролей (имена)
         if (user.getRoles() != null) {
             dto.setRoles(user.getRoles().stream()
-                .map(role -> role.getName().name())
+                .map(role -> new RoleDto(role.getId(), role.getName().name()))
                 .collect(Collectors.toList()));
         }
         return dto;

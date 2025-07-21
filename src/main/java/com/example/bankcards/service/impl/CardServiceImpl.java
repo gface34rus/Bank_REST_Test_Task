@@ -49,9 +49,9 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card updateCard(Long id, Card card) {
+    public CardDto updateCard(Long id, Card card) {
         card.setId(id);
-        return cardRepository.save(card);
+        return CardMapper.toDto(cardRepository.save(card));
     }
 
     @Override
@@ -60,17 +60,17 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card blockCard(Long id) {
+    public CardDto blockCard(Long id) {
         Card card = cardRepository.findById(id).orElseThrow();
         card.setStatus(Card.Status.BLOCKED);
-        return cardRepository.save(card);
+        return CardMapper.toDto(cardRepository.save(card));
     }
 
     @Override
-    public Card activateCard(Long id) {
+    public CardDto activateCard(Long id) {
         Card card = cardRepository.findById(id).orElseThrow();
         card.setStatus(Card.Status.ACTIVE);
-        return cardRepository.save(card);
+        return CardMapper.toDto(cardRepository.save(card));
     }
 
     @Override

@@ -24,7 +24,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
-        return userService.findById(id).map(UserMapper::toDto).orElse(null);
+        return userService.findById(id).orElse(null);
     }
 
     @GetMapping
@@ -36,12 +36,12 @@ public class UserController {
 
     @PostMapping
     public UserDto createUser(@RequestBody User user) {
-        return UserMapper.toDto(userService.createUser(user));
+        return userService.createUser(user);
     }
 
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody User user) {
-        return UserMapper.toDto(userService.updateUser(id, user));
+        return userService.updateUser(id, user);
     }
 
     @DeleteMapping("/{id}")

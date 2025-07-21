@@ -3,6 +3,7 @@ package com.example.bankcards.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cards")
@@ -16,6 +17,7 @@ public class Card {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnore
     private User owner;
 
     @Column(nullable = false)

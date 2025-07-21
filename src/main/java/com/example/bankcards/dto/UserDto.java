@@ -1,10 +1,12 @@
 package com.example.bankcards.dto;
 
+import java.util.List;
+
 public class UserDto {
     private Long id;
     private String username;
     private String email;
-    private java.util.List<String> roles;
+    private List<RoleDto> roles;
 
     public UserDto() {}
 
@@ -38,11 +40,11 @@ public class UserDto {
         this.email = email;
     }
 
-    public java.util.List<String> getRoles() {
+    public List<RoleDto> getRoles() {
         return roles;
     }
 
-    public void setRoles(java.util.List<String> roles) {
+    public void setRoles(List<RoleDto> roles) {
         this.roles = roles;
     }
 } 

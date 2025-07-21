@@ -2,6 +2,7 @@ package com.example.bankcards.entity;
 
 import jakarta.persistence.*;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "roles")
@@ -15,6 +16,7 @@ public class Role {
     private RoleName name;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public enum RoleName {

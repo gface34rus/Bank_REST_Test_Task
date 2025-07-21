@@ -51,7 +51,7 @@ public class CardController {
 
     @PutMapping("/{id}")
     public CardDto updateCard(@PathVariable Long id, @RequestBody Card card) {
-        return CardMapper.toDto(cardService.updateCard(id, card));
+        return cardService.updateCard(id, card);
     }
 
     @DeleteMapping("/{id}")
@@ -62,13 +62,13 @@ public class CardController {
 
     @PostMapping("/{id}/block")
     public CardDto blockCard(@PathVariable Long id) {
-        return CardMapper.toDto(cardService.blockCard(id));
+        return cardService.blockCard(id);
     }
 
 
     @PostMapping("/{id}/activate")
     public CardDto activateCard(@PathVariable Long id) {
-        return CardMapper.toDto(cardService.activateCard(id));
+        return cardService.activateCard(id);
     }
 
 

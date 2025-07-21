@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface CardService {
     CardDto createCard(CreateCardRequest request, User owner);
     Optional<CardDto> getCardById(Long id);
-    Card updateCard(Long id, Card card);
+    CardDto updateCard(Long id, Card card);
     void deleteCard(Long id);
-    Card blockCard(Long id);
-    Card activateCard(Long id);
+    CardDto blockCard(Long id);
+    CardDto activateCard(Long id);
     Page<CardDto> listCards(User owner, Pageable pageable);
     void transferBetweenCards(Long fromCardId, Long toCardId, BigDecimal amount, User user);
     BigDecimal getBalance(Long cardId, User user);
