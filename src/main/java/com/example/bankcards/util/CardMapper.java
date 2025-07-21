@@ -7,12 +7,15 @@ public class CardMapper {
     public static CardDto toDto(Card card) {
         String decrypted = CardEncryptionUtil.decrypt(card.getCardNumber());
         String masked = CardMaskUtil.mask(decrypted);
-        return new CardDto(
-                card.getId(),
-                masked,
-                card.getExpiryDate(),
-                card.getStatus().name(),
-                card.getBalance()
-        );
+        CardDto dto = new CardDto();
+        dto.setId(card.getId());
+        dto.setMaskedCardNumber(masked);
+        if (card.getOwner() != null) {
+            dto.setOwnerUsername(card.getOwner().getUsername());
+        }
+        dto.setExpiryDate(card.getExpiryDate());
+        dto.setStatus(card.getStatus().name());
+        dto.setBalance(card.getBalance());
+        return dto;
     }
 } 

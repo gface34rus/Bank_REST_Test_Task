@@ -3,6 +3,7 @@ package com.example.bankcards.controller;
 import com.example.bankcards.entity.User;
 import com.example.bankcards.service.UserService;
 import com.example.bankcards.dto.UserDto;
+import com.example.bankcards.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable Long id) {
-        return userService.findById(id);
+    public UserDto getUserById(@PathVariable Long id) {
+        return userService.findById(id).map(UserMapper::toDto).orElse(null);
     }
 
     @GetMapping
@@ -34,13 +35,13 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public UserDto createUser(@RequestBody User user) {
+        return UserMapper.toDto(userService.createUser(user));
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public UserDto updateUser(@PathVariable Long id, @RequestBody User user) {
+        return UserMapper.toDto(userService.updateUser(id, user));
     }
 
     @DeleteMapping("/{id}")

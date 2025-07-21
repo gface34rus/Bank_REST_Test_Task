@@ -6,15 +6,17 @@ import java.time.LocalDate;
 public class CardDto {
     private Long id;
     private String maskedCardNumber;
+    private String ownerUsername;
     private LocalDate expiryDate;
     private String status;
     private BigDecimal balance;
 
     public CardDto() {}
 
-    public CardDto(Long id, String maskedCardNumber, LocalDate expiryDate, String status, BigDecimal balance) {
+    public CardDto(Long id, String maskedCardNumber, String ownerUsername, LocalDate expiryDate, String status, BigDecimal balance) {
         this.id = id;
         this.maskedCardNumber = maskedCardNumber;
+        this.ownerUsername = ownerUsername;
         this.expiryDate = expiryDate;
         this.status = status;
         this.balance = balance;
@@ -34,6 +36,14 @@ public class CardDto {
 
     public void setMaskedCardNumber(String maskedCardNumber) {
         this.maskedCardNumber = maskedCardNumber;
+    }
+
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
     }
 
     public LocalDate getExpiryDate() {

@@ -5,6 +5,7 @@ import com.example.bankcards.entity.User;
 import com.example.bankcards.service.CardService;
 import com.example.bankcards.dto.CardDto;
 import com.example.bankcards.dto.CreateCardRequest;
+import com.example.bankcards.util.CardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,8 +50,8 @@ public class CardController {
     }
 
     @PutMapping("/{id}")
-    public Card updateCard(@PathVariable Long id, @RequestBody Card card) {
-        return cardService.updateCard(id, card);
+    public CardDto updateCard(@PathVariable Long id, @RequestBody Card card) {
+        return CardMapper.toDto(cardService.updateCard(id, card));
     }
 
     @DeleteMapping("/{id}")
@@ -60,14 +61,14 @@ public class CardController {
 
 
     @PostMapping("/{id}/block")
-    public Card blockCard(@PathVariable Long id) {
-        return cardService.blockCard(id);
+    public CardDto blockCard(@PathVariable Long id) {
+        return CardMapper.toDto(cardService.blockCard(id));
     }
 
 
     @PostMapping("/{id}/activate")
-    public Card activateCard(@PathVariable Long id) {
-        return cardService.activateCard(id);
+    public CardDto activateCard(@PathVariable Long id) {
+        return CardMapper.toDto(cardService.activateCard(id));
     }
 
 
