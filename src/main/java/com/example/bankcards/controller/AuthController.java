@@ -33,7 +33,6 @@ public class AuthController {
                 )
         );
         String jwt = tokenProvider.generateToken(authentication);
-
         return new JwtAuthenticationResponse(jwt);
     }
 } 
