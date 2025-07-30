@@ -45,9 +45,20 @@
 
     <changeSet id="3-create-user_roles" author="ai">
         <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="user_roles"/>
-            </not>
+            <and>
+                <not>
+                    <tableExists tableName="user_roles"/>
+                </not>
+                <not>
+                    <primaryKeyExists tableName="user_roles" primaryKeyName="user_roles_pkey"/>
+                </not>
+                <not>
+                    <foreignKeyConstraintExists foreignKeyName="fk_user_roles_user_id"/>
+                </not>
+                <not>
+                    <foreignKeyConstraintExists foreignKeyName="fk_user_roles_role_id"/>
+                </not>
+            </and>
         </preConditions>
         <createTable tableName="user_roles">
             <column name="user_id" type="BIGINT">
@@ -57,26 +68,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <primaryKeyExists tableName="user_roles" primaryKeyName="user_roles_pkey"/>
-            </not>
-        </preConditions>
         <addPrimaryKey tableName="user_roles" columnNames="user_id, role_id"/>
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <foreignKeyConstraintExists foreignKeyName="fk_user_roles_user_id"/>
-            </not>
-        </preConditions>
         <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id"
                                  referencedTableName="users" referencedColumnNames="id"
                                  onDelete="CASCADE"
                                  constraintName="fk_user_roles_user_id"/>
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <foreignKeyConstraintExists foreignKeyName="fk_user_roles_role_id"/>
-            </not>
-        </preConditions>
         <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role_id"
                                  referencedTableName="roles" referencedColumnNames="id"
                                  onDelete="CASCADE"
@@ -85,9 +81,14 @@
 
     <changeSet id="4-create-cards" author="ai">
         <preConditions onFail="MARK_RAN">
-            <not>
-                <tableExists tableName="cards"/>
-            </not>
+            <and>
+                <not>
+                    <tableExists tableName="cards"/>
+                </not>
+                <not>
+                    <foreignKeyConstraintExists foreignKeyName="fk_cards_owner_id"/>
+                </not>
+            </and>
         </preConditions>
         <createTable tableName="cards">
             <column name="id" type="BIGINT" autoIncrement="true">
@@ -109,11 +110,6 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <preConditions onFail="MARK_RAN">
-            <not>
-                <foreignKeyConstraintExists foreignKeyName="fk_cards_owner_id"/>
-            </not>
-        </preConditions>
         <addForeignKeyConstraint baseTableName="cards" baseColumnNames="owner_id"
                                  referencedTableName="users" referencedColumnNames="id"
                                  onDelete="CASCADE"
