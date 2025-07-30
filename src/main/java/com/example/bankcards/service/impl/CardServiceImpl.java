@@ -20,17 +20,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * Реализация сервиса для работы с банковскими картами.
+ * Предоставляет методы для создания, чтения, обновления карт,
+ * управления их статусом и перевода средств между картами
+ * с использованием транзакций для операций изменения данных.
+ * 
+ * @author Bank REST Team
+ * @version 1.0
+ */
 @Service
 public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
 
+    /**
+     * Конструктор с внедрением зависимостей.
+     * 
+     * @param cardRepository репозиторий для работы с картами
+     * @param userRepository репозиторий для работы с пользователями
+     */
     @Autowired
     public CardServiceImpl(CardRepository cardRepository, UserRepository userRepository) {
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public CardDto createCard(CreateCardRequest request, User owner) {
@@ -45,11 +63,17 @@ public class CardServiceImpl implements CardService {
         return CardMapper.toDto(saved);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<CardDto> getCardById(Long id) {
         return cardRepository.findById(id).map(CardMapper::toDto);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public CardDto updateCard(Long id, Card card) {
@@ -57,12 +81,18 @@ public class CardServiceImpl implements CardService {
         return CardMapper.toDto(cardRepository.save(card));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void deleteCard(Long id) {
         cardRepository.deleteById(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public CardDto blockCard(Long id) {
@@ -71,6 +101,9 @@ public class CardServiceImpl implements CardService {
         return CardMapper.toDto(cardRepository.save(card));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public CardDto activateCard(Long id) {
@@ -79,12 +112,18 @@ public class CardServiceImpl implements CardService {
         return CardMapper.toDto(cardRepository.save(card));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Page<CardDto> listCards(User owner, Pageable pageable) {
         Page<Card> cards = cardRepository.findAllByOwner(owner, pageable);
         return new PageImpl<>(cards.getContent().stream().map(CardMapper::toDto).toList(), pageable, cards.getTotalElements());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void transferBetweenCards(Long fromCardId, Long toCardId, BigDecimal amount, User user) {
@@ -102,6 +141,9 @@ public class CardServiceImpl implements CardService {
         cardRepository.save(toCard);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BigDecimal getBalance(Long cardId, User user) {
         Card card = cardRepository.findById(cardId).orElseThrow();
