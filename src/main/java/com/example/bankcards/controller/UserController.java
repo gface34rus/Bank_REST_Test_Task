@@ -11,6 +11,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 /**
  * REST контроллер для управления пользователями.
@@ -20,6 +25,7 @@ import java.util.Optional;
  * @author Bank REST Team
  * @version 1.0
  */
+@Tag(name = "Пользователи", description = "Управление пользователями (только для админов)")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -35,63 +41,52 @@ public class UserController {
         this.userService = userService;
     }
 
-    /**
-     * Получает пользователя по его идентификатору.
-     * 
-     * @param id идентификатор пользователя
-     * @return Optional с данными пользователя или пустой Optional, если пользователь не найден
-     */
+    @Operation(summary = "Получить пользователя по ID", description = "Возвращает пользователя по его идентификатору.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Пользователь найден"),
+        @ApiResponse(responseCode = "404", description = "Пользователь не найден")
+    })
     @GetMapping("/{id}")
-    public UserDto getUserById(@PathVariable Long id) {
+    public UserDto getUserById(@Parameter(description = "ID пользователя", required = true) @PathVariable Long id) {
         return userService.findById(id).orElse(null);
     }
 
-    /**
-     * Получает список пользователей с пагинацией.
-     * 
-     * @param page номер страницы (по умолчанию 0)
-     * @param size размер страницы (по умолчанию 10)
-     * @return страница с пользователями
-     */
+    @Operation(summary = "Получить список пользователей", description = "Возвращает страницу пользователей с пагинацией.")
+    @ApiResponse(responseCode = "200", description = "Список пользователей получен")
     @GetMapping
-    public Page<UserDto> listUsers(@RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "10") int size) {
+    public Page<UserDto> listUsers(
+            @Parameter(description = "Номер страницы", example = "0") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Размер страницы", example = "10") @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userService.listUsers(pageable);
     }
 
-    /**
-     * Создает нового пользователя.
-     * 
-     * @param user данные пользователя для создания
-     * @return созданный пользователь
-     * @throws IllegalArgumentException если данные пользователя некорректны
-     */
+    @Operation(summary = "Создать пользователя", description = "Создает нового пользователя.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Пользователь создан"),
+        @ApiResponse(responseCode = "400", description = "Некорректные данные пользователя")
+    })
     @PostMapping
-    public UserDto createUser(@RequestBody User user) {
+    public UserDto createUser(@Parameter(description = "Данные пользователя для создания", required = true) @RequestBody User user) {
         return userService.createUser(user);
     }
 
-    /**
-     * Обновляет существующего пользователя.
-     * 
-     * @param id идентификатор пользователя для обновления
-     * @param user новые данные пользователя
-     * @return обновленный пользователь
-     * @throws IllegalArgumentException если данные пользователя некорректны
-     */
+    @Operation(summary = "Обновить пользователя", description = "Обновляет существующего пользователя по ID.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Пользователь обновлен"),
+        @ApiResponse(responseCode = "400", description = "Некорректные данные пользователя")
+    })
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable Long id, @RequestBody User user) {
+    public UserDto updateUser(
+            @Parameter(description = "ID пользователя", required = true) @PathVariable Long id,
+            @Parameter(description = "Новые данные пользователя", required = true) @RequestBody User user) {
         return userService.updateUser(id, user);
     }
 
-    /**
-     * Удаляет пользователя по его идентификатору.
-     * 
-     * @param id идентификатор пользователя для удаления
-     */
+    @Operation(summary = "Удалить пользователя", description = "Удаляет пользователя по ID.")
+    @ApiResponse(responseCode = "204", description = "Пользователь удален")
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@Parameter(description = "ID пользователя", required = true) @PathVariable Long id) {
         userService.deleteUser(id);
     }
 } 

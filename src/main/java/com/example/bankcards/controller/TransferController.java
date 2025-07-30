@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 /**
  * REST контроллер для управления переводами между картами.
@@ -16,6 +21,7 @@ import java.security.Principal;
  * @author Bank REST Team
  * @version 1.0
  */
+@Tag(name = "Переводы", description = "Переводы между картами (USER, ADMIN)")
 @RestController
 @RequestMapping("/api/transfers")
 public class TransferController {
@@ -41,11 +47,17 @@ public class TransferController {
      * @throws IllegalArgumentException если пользователь не владеет обеими картами
      * @throws InsufficientFundsException если недостаточно средств на карте-отправителе
      */
+    @Operation(summary = "Перевести средства между картами", description = "Выполняет перевод средств между картами одного пользователя.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Перевод выполнен успешно"),
+        @ApiResponse(responseCode = "400", description = "Ошибка перевода: недостаточно средств или пользователь не владеет картами")
+    })
     @PostMapping
-    public void transfer(@RequestParam Long fromCardId,
-                         @RequestParam Long toCardId,
-                         @RequestParam BigDecimal amount,
-                         Principal principal) {
+    public void transfer(
+            @Parameter(description = "ID карты-отправителя", required = true) @RequestParam Long fromCardId,
+            @Parameter(description = "ID карты-получателя", required = true) @RequestParam Long toCardId,
+            @Parameter(description = "Сумма перевода", required = true) @RequestParam BigDecimal amount,
+            @Parameter(hidden = true) Principal principal) {
         User user = new User();
         user.setUsername(principal.getName());
         cardService.transferBetweenCards(fromCardId, toCardId, amount, user);

@@ -9,6 +9,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 /**
  * REST контроллер для аутентификации пользователей.
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Bank REST Team
  * @version 1.0
  */
+@Tag(name = "Аутентификация", description = "Вход в систему и получение JWT токена")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -43,8 +49,14 @@ public class AuthController {
      * @return JWT токен для доступа к защищенным ресурсам
      * @throws AuthenticationException если учетные данные некорректны
      */
+    @Operation(summary = "Вход в систему", description = "Аутентифицирует пользователя и возвращает JWT токен.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Аутентификация успешна, возвращён JWT токен"),
+        @ApiResponse(responseCode = "401", description = "Неверные учетные данные")
+    })
     @PostMapping("/login")
-    public JwtAuthenticationResponse authenticateUser(@RequestBody JwtAuthenticationRequest loginRequest) {
+    public JwtAuthenticationResponse authenticateUser(
+            @Parameter(description = "Данные для входа (имя пользователя и пароль)", required = true) @RequestBody JwtAuthenticationRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
