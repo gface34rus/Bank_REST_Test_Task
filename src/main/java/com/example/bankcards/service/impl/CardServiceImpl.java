@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public CardDto createCard(CreateCardRequest request, User owner) {
         String encryptedNumber = CardEncryptionUtil.encrypt(request.getCardNumber());
         Card card = new Card();
@@ -49,17 +51,20 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public CardDto updateCard(Long id, Card card) {
         card.setId(id);
         return CardMapper.toDto(cardRepository.save(card));
     }
 
     @Override
+    @Transactional
     public void deleteCard(Long id) {
         cardRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public CardDto blockCard(Long id) {
         Card card = cardRepository.findById(id).orElseThrow();
         card.setStatus(Card.Status.BLOCKED);
@@ -67,6 +72,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public CardDto activateCard(Long id) {
         Card card = cardRepository.findById(id).orElseThrow();
         card.setStatus(Card.Status.ACTIVE);
@@ -80,6 +86,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Transactional
     public void transferBetweenCards(Long fromCardId, Long toCardId, BigDecimal amount, User user) {
         Card fromCard = cardRepository.findById(fromCardId).orElseThrow();
         Card toCard = cardRepository.findById(toCardId).orElseThrow();
