@@ -5,6 +5,7 @@ public class CardMaskUtil {
         if (cardNumber == null || cardNumber.length() < 4) {
             return "****";
         }
+
         String last4 = cardNumber.substring(cardNumber.length() - 4);
         return "**** **** **** " + last4;
     }
